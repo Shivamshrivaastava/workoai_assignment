@@ -255,7 +255,7 @@ Authorization: Bearer <token>
 ## ✅ Deliverables Checklist
 
 - [x] **Source code** (Frontend + Backend)
-- [x] **Deployed Frontend**: https://refercandidates.netlify.app/
+- [x] **Deployed Frontend**:[ReferClub](https://refercandidates.netlify.app/)
 - [x] **Deployed Backend**: https://candidate-referal-systemq.onrender.com
 - [x] **CRUD/Status APIs**
 - [x] **Resume upload to Cloudinary**
