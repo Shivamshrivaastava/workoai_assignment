@@ -290,5 +290,5 @@ Authorization: Bearer <token>
 
 ## 🙌 Credits
 
-Built by **Shivam** as part of the Candidate Referral System assignment.  
+Built by **Shivam shrivastava** .  
 Cloud storage via **Cloudinary**. DB via **MongoDB Atlas**. Deploys on **Netlify** & **Render**.
