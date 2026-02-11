@@ -42,7 +42,7 @@ Backend: [backend](https://candidate-referal-systemq.onrender.com)
 
 ## 🧱 Tech Stack
 
-- **Frontend**: React (CRA + CRACO), Axios, Lucide Icons, Sonner
+- **Frontend**: React (vite), Axios, Lucide Icons, Sonner
 - **Styling**: Plain CSS (converted from Tailwind look), Responsive
 - **Backend**: Node.js, Express, Mongoose
 - **DB**: MongoDB Atlas
@@ -65,7 +65,6 @@ Backend: [backend](https://candidate-referal-systemq.onrender.com)
       Dashboard.jsx   # Main dashboard
     index.js
     index.css         # CSS styles
-  craco.config.js
   package.json
 
 /backend
@@ -91,12 +90,12 @@ Backend: [backend](https://candidate-referal-systemq.onrender.com)
 
 ### Frontend (`/frontend/.env`)
 ```
-REACT_APP_BACKEND_URL=https://candidate-referal-systemq.onrender.com
+VITE_BACKEND_URL=https://candidate-referal-systemq.onrender.com
 DISABLE_ESLINT_PLUGIN=true
 ```
 
 > For local dev, you can set:
-> `REACT_APP_BACKEND_URL=http://localhost:5000`
+> `VITE_BACKEND_URL=http://localhost:5000`
 
 ### Backend (`/backend/.env`)
 ```
@@ -129,9 +128,6 @@ npm start
 ```bash
 cd frontend
 npm install
-
-# If ESLint blocks production builds, this flag skips linting during build:
-# (already included in package.json build script or .env)
 npm run dev      # start dev server
 npm run build    # create production build
 ```
@@ -248,8 +244,7 @@ Authorization: Bearer <token>
 - Build command: `npm run build`
 - Publish directory: `build`
 - Environment:
-  - `REACT_APP_BACKEND_URL=https://candidate-referal-systemq.onrender.com`
-  - `DISABLE_ESLINT_PLUGIN=true` (only if CRACO+ESLint conflicts)
+  - `VITE_BACKEND_URL=https://candidate-referal-systemq.onrender.com`
 - SPA redirects: `/public/_redirects` with:
   ```
   /*    /index.html   200
@@ -281,7 +276,7 @@ Authorization: Bearer <token>
 
 ## 🧭 How to Switch Between Local and Deployed Backends
 
-- Change `REACT_APP_BACKEND_URL` in Frontend `.env`:
+- Change `VITE_BACKEND_URL` in Frontend `.env`:
   - Local: `http://localhost:5000`
   - Render: `https://candidate-referal-systemq.onrender.com`
 - Rebuild frontend for Netlify after changing `.env`.
