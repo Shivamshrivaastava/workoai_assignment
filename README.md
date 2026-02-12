@@ -7,7 +7,7 @@ ReferClub is a full-stack web application that enables authenticated users to re
 
 ## 🌐 Live Deployment
 
-* **Frontend:** [https://refercandidates.netlify.app/](https://refercandidates.netlify.app/)
+* **Frontend:** [https://refercandidates.netlify.app](https://refercandidates.netlify.app)
 * **Backend API:** [https://candidate-referal-systemq.onrender.com](https://candidate-referal-systemq.onrender.com)
 
 ---
