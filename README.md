@@ -1,72 +1,198 @@
 # ReferClub — Candidate Referral Management System
 
-A full‑stack app that consists: refer candidates, track statuses, upload resumes to cloud storage, and view simple metrics.
+ReferClub is a full-stack web application that enables authenticated users to refer candidates, manage hiring stages, upload resumes to cloud storage, and monitor referral metrics through a clean, responsive dashboard.
 
-**Live demo**  
-Frontend: [https://refercandidates.netlify.app/](https://refer-club.netlify.app/)  
-Backend: [backend](https://candidate-referal-systemq.onrender.com)
 
 ---
 
-## ✨ Features
+## 🌐 Live Deployment
 
-### Frontend (React)
-- **Authentication** (JWT): Login & Signup.
-- **Dashboard**
-  - List of referred candidates (fetched from backend).
-  - Each card shows **Name, Email, Phone, Job Title, Status**.
-  - **Search** by name/job title.
-  - **Filter** by status (All, Pending, Reviewed, Hired).
-- **Referral Form**
-  - Fields: Candidate Name, Email, Phone, Job Title, Resume (optional, **PDF only**).
-  - Submits to backend via `multipart/form-data`.
-- **Update Status**
-  - Change status from **Pending → Reviewed → Hired** via dropdown.
-- **Metrics**
-  - Total referred, and counts per status.
-
-### Backend (Node.js + Express + MongoDB)
-- **Endpoints**
-  - `POST /api/candidates` – Create candidate (with optional PDF upload).
-  - `GET /api/candidates` – List candidates (supports `?search` and `?status_filter`).
-  - `PUT /api/candidates/:id/status` – Update a candidate’s status.
-  - `DELETE /api/candidates/:id` – Delete candidate (optional requirement).
-  - `GET /api/candidates/stats` – Basic metrics.
-  - `POST /api/auth/signup` – Register.
-  - `POST /api/auth/login` – Login.
-- **Storage**
-  - **MongoDB Atlas** for candidate & user records.
-  - **Cloudinary** for resume files (PDF). Stored as **resource_type** = `raw` (recommended for PDF).
+* **Frontend:** [https://refercandidates.netlify.app/](https://refercandidates.netlify.app/)
+* **Backend API:** [https://candidate-referal-systemq.onrender.com](https://candidate-referal-systemq.onrender.com)
 
 ---
 
-## 🧱 Tech Stack
+# 🚀 Key Highlights (Recruiter Overview)
 
-- **Frontend**: React (vite), Axios, Lucide Icons, Sonner
-- **Styling**: Plain CSS (converted from Tailwind look), Responsive
-- **Backend**: Node.js, Express, Mongoose
-- **DB**: MongoDB Atlas
-- **Cloud Storage**: Cloudinary
-- **Auth**: JWT (Bearer token in `Authorization` header)
-- **Deploy**: Netlify (frontend), Render (backend)
+* JWT-based authentication (Login & Signup)
+* Protected REST APIs using Bearer tokens
+* Full CRUD operations for candidates
+* Resume upload to Cloudinary (PDF support)
+* Search & filter functionality
+* Status workflow management (Pending → Reviewed → Hired)
+* Metrics dashboard with real-time updates
+* Deployed frontend & backend
+* Clean MVC backend structure
+
+This project reflects end-to-end implementation from database schema to UI rendering.
 
 ---
 
-## 🗂 Project Structure (high‑level)
+# 🏗 System Architecture
+
+## Frontend
+
+* React (Vite)
+* Axios for API communication
+* Toast-based error handling
+* Responsive UI using modern CSS
+
+## Backend
+
+* Node.js + Express
+* MongoDB Atlas (Mongoose ODM)
+* JWT Authentication
+* Centralized error handling middleware
+* File upload handling (Multer + Cloudinary)
+
+## Cloud Storage
+
+* Cloudinary (secure PDF resume uploads)
+
+## Deployment
+
+* Netlify (Frontend)
+* Render (Backend)
+
+---
+
+# 📊 Core Features
+
+## 🔐 Authentication
+
+* User Registration
+* User Login
+* JWT token issuance
+* Protected API routes
+* Logout via token removal
+
+Authentication flow:
+
+1. User registers or logs in.
+2. Server issues JWT.
+3. Frontend stores token.
+4. Token is sent via `Authorization: Bearer <token>` header.
+
+---
+
+## 👥 Candidate Management
+
+### Create Candidate
+
+* Name
+* Email (validated)
+* Phone (10–15 digit validation)
+* Job Title
+* Resume (PDF only)
+
+Resumes are uploaded to Cloudinary using streaming upload.
+
+---
+
+### View Candidates
+
+* Displays all candidates referred by the authenticated user
+* Search by name or job title
+* Filter by status
+* Sorted by most recent
+
+---
+
+### Update Status Workflow
+
+Candidates move through stages:
+
+* Pending
+* Reviewed
+* Hired
+
+Status updates are persisted in MongoDB.
+
+---
+
+## 📈 Metrics Dashboard
+
+* Total Referred
+* Pending Count
+* Reviewed Count
+* Hired Count
+
+Counts are calculated dynamically via backend aggregation logic.
+
+---
+
+# 🔌 REST API Endpoints
+
+## Auth
+
+### Register
+
+```
+POST /api/auth/signup
+```
+
+### Login
+
+```
+POST /api/auth/login
+```
+
+---
+
+## Candidates (Authenticated)
+
+### Create
+
+```
+POST /api/candidates
+```
+
+### List (Search + Filter)
+
+```
+GET /api/candidates?search=&status_filter=
+```
+
+### Update Status
+
+```
+PUT /api/candidates/:id/status
+```
+
+### Delete
+
+```
+DELETE /api/candidates/:id
+```
+
+### Stats
+
+```
+GET /api/candidates/stats
+```
+
+---
+
+# 🗂 Project Structure
+
+## Frontend
 
 ```
 /frontend
   /public
-    _redirects        # Netlify SPA refresh fix
+    _redirects
   /src
     App.js
-    pages/
-      Auth.jsx        # Login/Signup
-      Dashboard.jsx   # Main dashboard
     index.js
-    index.css         # CSS styles
-  package.json
+    index.css
+    /pages
+      Auth.jsx
+      Dashboard.jsx
+```
 
+## Backend
+
+```
 /backend
   server.js
   /config
@@ -81,209 +207,108 @@ Backend: [backend](https://candidate-referal-systemq.onrender.com)
   /controllers
     authController.js
     candidateController.js
-  .env (not committed)
+  /middleware
+    auth.js
+    upload.js
+  /utils
+    generateId.js
+    validators.js
 ```
+
+Backend follows MVC layering:
+
+* Routes → Controllers → Models
+* Dedicated middleware for authentication and uploads
+* Centralized error handling
 
 ---
 
-## ⚙️ Environment Variables
+# 🛡 Error Handling Strategy
 
-### Frontend (`/frontend/.env`)
+Backend:
+
+* Centralized error middleware
+* Proper HTTP status codes (400 / 401 / 404 / 500)
+
+Frontend:
+
+* Toast notifications for API failures
+* Loading states handled using `finally`
+
+---
+
+# ⚙ Environment Variables
+
+## Frontend
+
 ```
 VITE_BACKEND_URL=https://candidate-referal-systemq.onrender.com
-DISABLE_ESLINT_PLUGIN=true
 ```
 
-> For local dev, you can set:
-> `VITE_BACKEND_URL=http://localhost:5000`
+## Backend
 
-### Backend (`/backend/.env`)
 ```
 PORT=5000
-MONGO_URL=<your-mongodb-connection-string>
+MONGO_URL=<mongodb-connection-string>
 DB_NAME=candidate-referal
 CORS_ORIGINS=*
-JWT_SECRET=<your-strong-secret>
+JWT_SECRET=<secret>
 JWT_ALGORITHM=HS256
 
-# Cloudinary
-CLOUDINARY_CLOUD_NAME=<cloud_name>
-CLOUDINARY_API_KEY=<api_key>
-CLOUDINARY_API_SECRET=<api_secret>
+CLOUDINARY_CLOUD_NAME=<cloud>
+CLOUDINARY_API_KEY=<key>
+CLOUDINARY_API_SECRET=<secret>
 ```
 
 ---
 
-## 🚀 Running Locally
+# 🧪 Local Development
 
-### 1) Backend
-```bash
+## Backend
+
+```
 cd backend
 npm install
 npm start
-# server at http://localhost:5000
 ```
 
-### 2) Frontend
-```bash
+## Frontend
+
+```
 cd frontend
 npm install
-npm run dev      # start dev server
-npm run build    # create production build
-```
-
-**Netlify SPA fix** (must have): `/frontend/public/_redirects`
-```
-/*    /index.html   200
+npm run dev
 ```
 
 ---
 
-## 🔐 Auth Flow
+# 📦 Deployment Notes
 
-- **Signup** `POST /api/auth/signup` → creates user in DB, returns `{"access_token": "...", "user": {...}}`.
-- **Login** `POST /api/auth/login` → verifies, returns `{"access_token": "...", "user": {...}}`.
-- Frontend stores token in `localStorage` and sends it as `Authorization: Bearer <token>` with all protected requests.
-
----
-
-## ☁️ Cloudinary Notes (PDF viewing)
-
-- Backend uploads PDF either as `resource_type: "raw"` (recommended) or `"image"` (if you need inline preview).
-- On the frontend, to make Cloudinary serve web‑viewable content types, we transform the URL:
-  - `resume_url.replace("/upload/", "/upload/f_auto/")` → This lets Cloudinary choose the best format when possible.
-- For **forced download** links:
-  - `resume_url.replace("/upload/", "/upload/fl_attachment/")`
-
-> If you upload as `raw`, the URL looks like:  
-> `https://res.cloudinary.com/<cloud>/raw/upload/v.../resumes/<file>.pdf`  
-> These URLs are directly openable by the browser (subject to CORS and resource availability).
+* Backend hosted on Render (free tier may experience cold start delays).
+* Frontend deployed on Netlify with SPA routing support.
+* All environment variables configured in respective dashboards.
 
 ---
 
-## 🧪 API Documentation (Quick Reference)
+# 🎯 What This Project Demonstrates
 
-### Auth
-**Signup**
-```
-POST /api/auth/signup
-Content-Type: application/json
-{
-  "full_name": "John Doe",
-  "email": "john@example.com",
-  "password": "secret123"
-}
-```
-**Login**
-```
-POST /api/auth/login
-Content-Type: application/json
-{
-  "email": "john@example.com",
-  "password": "secret123"
-}
-```
+* Secure authentication implementation
+* RESTful API design
+* MongoDB schema modeling
+* Cloud file upload handling
+* Full CRUD functionality
+* State management in React
+* Production deployment workflow
+* Environment configuration handling
 
-### Candidates
-**Create**
-```
-POST /api/candidates
-Authorization: Bearer <token>
-Content-Type: multipart/form-data
-Form fields: name, email, phone, job_title, resume (optional .pdf)
-```
-**List**
-```
-GET /api/candidates?search=dev&status_filter=Pending
-Authorization: Bearer <token>
-```
-**Update Status**
-```
-PUT /api/candidates/:id/status
-Authorization: Bearer <token>
-Content-Type: application/json
-{ "status": "Reviewed" }  # one of: Pending | Reviewed | Hired
-```
-**Delete**
-```
-DELETE /api/candidates/:id
-Authorization: Bearer <token>
-```
-**Stats**
-```
-GET /api/candidates/stats
-Authorization: Bearer <token>
-```
+
 
 ---
 
-## 🧰 Validation
+# 🙌 Author
 
-- Email format validated (basic RFC pattern).
-- Phone: 10–15 digits.
-- Resume: **PDF only** when uploading via form (`accept=".pdf"`).
+Built by Shivam Shrivastava.
 
----
-
-## 🧯 Error Handling
-
-- All endpoints return appropriate status codes (400/401/404/500).
-- Backend uses centralized error middleware.
-- Frontend shows toast notifications on failure.
-
----
-
-## 📦 Deployment
-
-### Backend (Render)
-- Root command: `npm install && npm start` (or `cd backend && npm i && npm start` if your repo contains both apps).
-- Set all **backend env vars** in Render dashboard.
-- Expose `PORT` and allow CORS: `CORS_ORIGINS=*` for testing.
-
-### Frontend (Netlify)
-- Build command: `npm run build`
-- Publish directory: `build`
-- Environment:
-  - `VITE_BACKEND_URL=https://candidate-referal-systemq.onrender.com`
-- SPA redirects: `/public/_redirects` with:
-  ```
-  /*    /index.html   200
-  ```
-
----
-
-## ✅ Deliverables Checklist
-
-- [x] **Source code** (Frontend + Backend)
-- [x] **Deployed Frontend**:[ReferClub](https://refercandidates.netlify.app/)
-- [x] **Deployed Backend**: https://candidate-referal-systemq.onrender.com
-- [x] **CRUD/Status APIs**
-- [x] **Resume upload to Cloudinary**
-- [x] **Metrics dashboard**
-- [x] **README** (this file)
-- [x] Postman: (optional) Use cURL snippets above or import routes manually
-
----
-
-## 📝 Assumptions & Limitations
-
-- Demo authentication (JWT) is basic; no refresh tokens.
-- CORS is open (`*`) for ease of testing; should be restricted in production.
-- Cloudinary files are public; for private assets you’d use signed URLs.
-- Validation is minimal by design; can be extended with `zod`/`yup` both client and server side.
-
----
-
-## 🧭 How to Switch Between Local and Deployed Backends
-
-- Change `VITE_BACKEND_URL` in Frontend `.env`:
-  - Local: `http://localhost:5000`
-  - Render: `https://candidate-referal-systemq.onrender.com`
-- Rebuild frontend for Netlify after changing `.env`.
-
----
-
-## 🙌 Credits
-
-Built by **Shivam shrivastava** .  
-Cloud storage via **Cloudinary**. DB via **MongoDB Atlas**. Deploys on **Netlify** & **Render**.
+Database: MongoDB Atlas
+Cloud Storage: Cloudinary
+Deployment: Netlify & Render
